@@ -26,6 +26,12 @@ const products = [
 
 ]
 
+let cart = []
+
+function getProductById(id) {
+    return products.find(product => product.id === id);
+}
+
 
 function createProductCard(product) {
     const card = document.createElement('div');
@@ -69,10 +75,37 @@ function renderProducts(products, containerId = 'products-container') {
     });
 }
 
+function createCartItem(product){
+    const cartItem = document.createElement('div');
+    cartItem.className = "cart-item";
+    cartItem.innerHTML = `
+            <div class="cart-item">
+                <img src="images/products/${product.img}" alt="">
+                <span>${product.title}</span>
+            </div>
+            `;
+            return cartItem;
+}
+
+function renderCart(cart, containerId = 'cart'){
+    const container = document.getElementById(containerId);
+    if (!container) return console.error(`No container found with id #${containerId}`);
+
+    container.innerHTML = ''; // Clear existing content
+
+    cart.forEach(product => {
+        const cart_item = createCartItem(product);
+        container.appendChild(cart_item);
+    });
+
+}
+
 function addToCart(productId) {
     console.log(`Added product ${productId} to cart`);
     // We'll replace this with code to request to API
-    alert(`Product ${productId} add to cart!!!`);
+    // alert(`Product ${productId} add to cart!!!`);
+    cart.push(getProductById(productId));
+    renderCart(cart);
 }
 
 // Run when DOM is ready
